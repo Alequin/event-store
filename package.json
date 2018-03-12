@@ -4,13 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "store": "node store/server.js",
+    "sub": "node subscriber/server.js"
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.16.2",
-    "lodash": "^4.17.5",
-    "mongodb": "^3.0.3"
-  }
+  "license": "ISC"
 }
