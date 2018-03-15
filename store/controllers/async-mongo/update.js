@@ -1,4 +1,4 @@
-const connect = require("./../../mongo-db/connect")
+const connect = require("./connect")
 
 async function update(toUpdate, newValue, collectionName){
   const {client, collection} = await connect(collectionName)

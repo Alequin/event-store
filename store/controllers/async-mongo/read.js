@@ -1,4 +1,4 @@
-const connect = require("./../../mongo-db/connect")
+const connect = require("./connect")
 
 async function readAll(collectionName, options = {}){
   return await readBy({}, collectionName, options)
