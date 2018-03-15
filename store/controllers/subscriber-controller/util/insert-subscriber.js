@@ -1,2 +1,0 @@
-
-async insertSubscriber(subscriptionPath, collectionName)
