@@ -5,9 +5,7 @@ async function publish(stream, events){
 
   connection.createChannel(function(err, channel) {
     channel.assertQueue(stream, {durable: false});
-    console.log("stream", stream);
     events.forEach((event) => {
-      console.log("publishing", event);
       channel.sendToQueue(stream, new Buffer(JSON.stringify(event)))
     })
   });
