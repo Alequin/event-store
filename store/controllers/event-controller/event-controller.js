@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const rabbitMQ = require('amqplib/callback_api');
-
 const {readAll} = require("./../async-mongo/read")
 const {eventCollectionName} = require("./../util/collection-postfix")
 const insertEvents = require("./util/insert-events")
+
+const publish = require("./../rabbit-mq/publish-event")
 
 router.get('/:stream', async (req, res) => {
   const collectionName = collectionNameFromParams(req)
@@ -13,19 +13,13 @@ router.get('/:stream', async (req, res) => {
 })
 
 router.post("/:stream", async (req, res) => {
-  const collectionName = collectionNameFromParams(req)
+  const {stream} = req.params
+
+  const collectionName = eventCollectionName(stream)
   const events = req.body
   const result = await insertEvents(events, collectionName)
-
-  rabbitMQ.connect('amqp://localhost', function(err, conn) {
-    conn.createChannel(function(err, ch) {
-      const queueName = req.stream;
-      ch.assertQueue(queueName, {durable: false});
-      ch.sendToQueue(queueName, new Buffer(events));
-      console.log("Sent events to rabbitMQ");
-      conn.close()
-    });
-  });
+  
+  publish(stream, events)
 
   res.json(result)
 })
