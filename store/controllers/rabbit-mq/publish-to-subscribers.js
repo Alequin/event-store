@@ -1,6 +1,6 @@
 const connect = require("./connect")
 
-async function publish(stream, events){
+async function publishToSubscribers(stream, events){
   const connection = await connect()
 
   connection.createChannel(function(err, channel) {
@@ -11,4 +11,4 @@ async function publish(stream, events){
   });
 }
 
-module.exports = publish
+module.exports = publishToSubscribers
