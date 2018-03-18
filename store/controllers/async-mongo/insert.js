@@ -1,4 +1,4 @@
-const connect = require("./connect")
+const connect = require("./../../mongo-db/connect")
 
 const notArrayMessage = "first argument must be an array of elements"
 

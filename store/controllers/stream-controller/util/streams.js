@@ -1,5 +1,5 @@
 
-const connect = require("./../../async-mongo/connect")
+const connect = require("./../../../mongo-db/connect")
 
 async function streamNames(){
   const {database, client} = await connect()
