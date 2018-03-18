@@ -1,12 +1,17 @@
 const express = require('express');
 const router = express.Router();
 
-const {readAll} = require("./../async-mongo/read")
+const {readAll, readBy} = require("./../async-mongo/read")
 const insertEvents = require("./util/insert-events")
 const validateEvents = require("./util/validate-events")
 const addTimeStampToEvents = require("./util/add-time-stamp-to-events")
 
 const publishToSubscribers = require("./../rabbit-mq/publish-to-subscribers")
+
+router.get('/:stream/aggregateId/:aggregateId', async (req, res) => {
+  const {aggregateId} = req.params
+  res.json(await readBy({aggregateId}, req.params.stream, ))
+})
 
 router.get('/:stream', async (req, res) => {
   res.json(await readAll(req.params.stream))
