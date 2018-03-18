@@ -8,9 +8,14 @@ const addTimeStampToEvents = require("./util/add-time-stamp-to-events")
 
 const publishToSubscribers = require("./../rabbit-mq/publish-to-subscribers")
 
+router.get('/:stream/event-type/:type', async (req, res) => {
+  const {type} = req.params
+  res.json(await readBy({type}, req.params.stream))
+})
+
 router.get('/:stream/aggregateId/:aggregateId', async (req, res) => {
   const {aggregateId} = req.params
-  res.json(await readBy({aggregateId}, req.params.stream, ))
+  res.json(await readBy({aggregateId}, req.params.stream))
 })
 
 router.get('/:stream', async (req, res) => {
