@@ -21,7 +21,7 @@ router.post("/:stream", async (req, res) => {
   if(areEventsValid){
     const eventsWithTimeStamp = addTimeStampToEvents(events)
     const result = await insertEvents(eventsWithTimeStamp, stream)
-    publishToSubscribers(stream, events)
+    publishToSubscribers(stream, result.ops)
     res.json(result)
   }else{
     res.json(errors)
