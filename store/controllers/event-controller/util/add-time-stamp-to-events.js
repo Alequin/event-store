@@ -1,8 +1,8 @@
 
 function addTimeStampToEvents(events){
   return events.map((event) => {
-    event.timeStamp = timeStamp()
-    return event
+    const newEvent = {...event, timeStamp: timeStamp()}
+    return newEvent
   })
 }
 

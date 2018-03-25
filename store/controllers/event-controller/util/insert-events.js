@@ -2,18 +2,23 @@
 const insert = require("./../../async-mongo/insert")
 const update = require("./../../async-mongo/update")
 
+const addTimeStampToEvents = require("./add-time-stamp-to-events")
+
 const {lastEventPosition} = require("./last-event")
-const prepareNewEvents = require("./prepare-new-events")
 
 async function insertEvents(events, collectionName){
-  const prevLastPosition = await lastEventPosition(collectionName)
-  const eventsToInsert = prepareNewEvents(events, prevLastPosition)
-  await setOldTailToFalse(collectionName)
+  const eventsWithTimeStamp = addTimeStampToEvents(events)
+  const prevLastEventPosition = await lastEventPosition(collectionName)
+  const eventsToInsert = applyPositionNumbers(eventsWithTimeStamp, prevLastEventPosition)
   return await insert(eventsToInsert, collectionName)
 }
 
-async function setOldTailToFalse(collectionName){
-  await update({tail: true}, {$set: {tail: false}}, collectionName)
+function applyPositionNumbers(events, lastPosition){
+  const next = lastPosition + 1
+  return events.map((event, index) => {
+    const newEvent = {...event, position: next + index}
+    return newEvent
+  })
 }
 
 module.exports = insertEvents

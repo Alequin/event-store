@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 const {readAll, readBy} = require("./../async-mongo/read")
+
 const insertEvents = require("./util/insert-events")
-const validateEvents = require("./util/validate-events")
-const addTimeStampToEvents = require("./util/add-time-stamp-to-events")
 const rejectEmptyMapValues = require("./util/reject-empty-map-values")
+const validateEvents = require("./util/validate-events")
 
 const publishToSubscribers = require("./../rabbit-mq/publish-to-subscribers")
 
@@ -25,8 +25,7 @@ router.post("/:stream", async (req, res) => {
   const {areEventsValid, errors} = validateEvents(events)
 
   if(areEventsValid){
-    const eventsWithTimeStamp = addTimeStampToEvents(events)
-    const result = await insertEvents(eventsWithTimeStamp, stream)
+    const result = await insertEvents(events, stream)
     publishToSubscribers(stream, result.ops)
     res.json(result)
   }else{
