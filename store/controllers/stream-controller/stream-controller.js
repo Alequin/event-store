@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const streamNames = require("./util/streams")
+const streamNames = require("./util/streamNames")
 
 router.get('/', async (req, res) => {
   res.json(await streamNames())
