@@ -12,7 +12,7 @@ const publishToSubscribers = require("./rabbit-mq/publish-to-subscribers")
 router.get('/:stream', async (req, res) => {
   const {type, aggregateId, limit} = req.query
   const searchCriteria = rejectEmptyMapValues({type, aggregateId})
-  const searchOptions = rejectEmptyMapValues({sort: [['position', -1]], limit})
+  const searchOptions = rejectEmptyMapValues({sort: [['position', -1]], limit: parseInt(limit)})
   res.json(await readBy(searchCriteria, req.params.stream, searchOptions))
 })
 
