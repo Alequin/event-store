@@ -1,16 +1,12 @@
 
-const insert = require("./../../async-mongo/insert")
-const update = require("./../../async-mongo/update")
-
 const addTimeStampToEvents = require("./add-time-stamp-to-events")
 
 const {lastEventPosition} = require("./last-event")
 
-async function insertEvents(events, collectionName){
+async function prepareEvents(events, collectionName){
   const eventsWithTimeStamp = addTimeStampToEvents(events)
   const prevLastEventPosition = await lastEventPosition(collectionName)
-  const eventsToInsert = applyPositionNumbers(eventsWithTimeStamp, prevLastEventPosition)
-  return await insert(eventsToInsert, collectionName)
+  return applyPositionNumbers(eventsWithTimeStamp, prevLastEventPosition)
 }
 
 function applyPositionNumbers(events, lastPosition){
@@ -21,4 +17,4 @@ function applyPositionNumbers(events, lastPosition){
   })
 }
 
-module.exports = insertEvents
+module.exports = prepareEvents
