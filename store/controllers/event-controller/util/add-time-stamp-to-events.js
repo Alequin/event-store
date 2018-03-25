@@ -10,16 +10,15 @@ function timeStamp(){
     const date = new Date()
 
     const year = date.getFullYear()
-    const month = formatDateDigits(date.getMonth())
+    const month = formatDateDigits(date.getMonth()+1)
     const day = formatDateDigits(date.getDate())
     const time = date.getTime()
 
-    return `${year}.${month}.${day}.${time}`
+    return `${year}-${month}-${day}-${time}`
 }
 
 function formatDateDigits(number){
-  const numAsString = number.toString()
-  return numAsString.length === 1 ? `0${numAsString}` : numAsString
+  return number < 10 ? `0${number}` : number.toString()
 }
 
 module.exports = addTimeStampToEvents
