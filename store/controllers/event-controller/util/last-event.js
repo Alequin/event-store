@@ -2,8 +2,9 @@ const get = require("lodash/get")
 const { readBy } = require("./../../async-mongo/read")
 
 async function lastEvent(collectionName){
-  const searchOptions = {sort: {_id: -1}, limit: 1}
-  return (await readBy({}, collectionName, searchOptions))
+  const searchOptions = {sort: [['position', -1]], limit: 1}
+  const [event] = (await readBy({}, collectionName, searchOptions))
+  return event
 }
 
 async function lastEventPosition(collectionName){

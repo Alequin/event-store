@@ -7,16 +7,13 @@ const insertEvents = require("./util/insert-events")
 const rejectEmptyMapValues = require("./util/reject-empty-map-values")
 const validateEvents = require("./util/validate-events")
 
-const publishToSubscribers = require("./../rabbit-mq/publish-to-subscribers")
+const publishToSubscribers = require("./rabbit-mq/publish-to-subscribers")
 
 router.get('/:stream', async (req, res) => {
-  res.json(await readAll(req.params.stream))
-})
-
-router.get('/:stream/search', async (req, res) => {
-  const {type, aggregateId} = req.query
-  const searchOptions = rejectEmptyMapValues({type, aggregateId})
-  res.json(await readBy(searchOptions, req.params.stream))
+  const {type, aggregateId, limit} = req.query
+  const searchCriteria = rejectEmptyMapValues({type, aggregateId})
+  const searchOptions = rejectEmptyMapValues({sort: [['position', -1]], limit})
+  res.json(await readBy(searchCriteria, req.params.stream, searchOptions))
 })
 
 router.post("/:stream", async (req, res) => {

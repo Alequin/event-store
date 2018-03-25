@@ -5,7 +5,7 @@ async function publishToSubscribers(stream, events){
 
   connection.createChannel(function(err, channel) {
     channel.assertQueue(stream, {durable: false});
-    events.forEach((event) => {
+    events.reverse().forEach((event) => {
       channel.sendToQueue(stream, new Buffer(JSON.stringify(event)))
     })
   });
