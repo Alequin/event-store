@@ -1,4 +1,4 @@
-const rabbitMQ = require('amqplib/callback_api');
+const rabbitMQ = require('amqplib');
 
 const INTERVAL = 1000
 
@@ -6,30 +6,24 @@ function connectionEstablisher(){
   let connection = null
   let closeTimer = 0
 
-  const startConnectionCloseCountDown = (conn) => {
+  const startConnectionCloseCountDown = () => {
     const intervalId = setInterval(() => {
       closeTimer = closeTimer - 1
       if(closeTimer === 0){
-        conn.close()
-        conn = null
+        connection.close()
+        connection = null
         clearInterval(intervalId)
       }
     }, INTERVAL)
   }
 
   return async (openConnectionTime = 10) => {
-    return new Promise((resolve, reject) => {
-      closeTimer = openConnectionTime
-      if(!connection){
-        rabbitMQ.connect('amqp://localhost', function(err, connection) {
-          if(err) reject(err)
-          resolve(connection)
-          startConnectionCloseCountDown(connection)
-        });
-      }else{
-        resolve(connection)
-      }
-    })
+    closeTimer = openConnectionTime
+    if(!connection){
+      connection = await rabbitMQ.connect('amqp://localhost')
+      startConnectionCloseCountDown()
+    }
+    return connection
   }
 }
 
