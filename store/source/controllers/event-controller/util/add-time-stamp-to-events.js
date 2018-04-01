@@ -6,15 +6,17 @@ function addTimeStampToEvents(events){
   })
 }
 
-function timeStamp(){
-    const date = new Date()
+function timeStamp(date = new Date()){
 
     const year = date.getFullYear()
     const month = formatDateDigits(date.getMonth()+1)
     const day = formatDateDigits(date.getDate())
-    const time = date.getTime()
+    const hours = date.getHours()
+    const minutes = date.getMinutes()
+    const seconds = date.getSeconds()
+    const miliseconds = date.getMilliseconds()
 
-    return `${year}-${month}-${day}-${time}`
+    return `${year}-${month}-${day}-${hours}-${minutes}-${seconds}-${miliseconds}`
 }
 
 function formatDateDigits(number){

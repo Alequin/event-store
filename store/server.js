@@ -1,9 +1,9 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
-const indexController = require("./controllers/index-controller")
-const eventController = require("./controllers/event-controller/event-controller")
-const streamController = require("./controllers/stream-controller/stream-controller")
+const indexController = require("./source/controllers/index-controller")
+const eventController = require("./source/controllers/event-controller/event-controller")
+const streamController = require("./source/controllers/stream-controller/stream-controller")
 
 const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
